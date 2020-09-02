@@ -1,0 +1,45 @@
+<!-- https://vuejsexamples.net -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>mytry</title>
+    <!-- include vue -->
+    <script src="https://unpkg.com/vue"></script>
+    <!-- axios ·-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+  </head>
+  <body>
+    <div id="app2">
+      Posts:
+      <li v-for="post of posts">
+        <p>{{post}}</p>
+      </li>
+
+    </div>
+		  <div>
+        <a href="/home">home</home>
+      </li>
+	
+
+  </body>
+  <script>
+  new Vue({
+    el: '#app2',
+    created() {
+        this.fetchData(); 
+    },
+    data: {
+        posts: []
+    },
+    methods: {
+        fetchData() {
+        axios.get('http://localhost:8010/controller/teacher_vue/findAllTeachersVue').then(response => {
+            this.posts = response.data;
+            });
+        }
+    }
+});  
+  </script>
+</html>
+

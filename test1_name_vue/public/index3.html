@@ -1,0 +1,117 @@
+<!-- https://vuejsexamples.net -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>mytry</title>
+    <!-- include vue -->
+    <script src="https://unpkg.com/vue"></script>
+    <!-- axios ·-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+  </head>
+  <body>
+    <div id="app_insertTeacher">
+	
+	<form method="post">
+		<table>
+			<caption>insert teacher</caption>
+			<tr>
+				<td>teacherId:</td>
+				<td><input type="text" id="teacherId" v-model="v_teacherId"
+					placeholder="input the id here" /></td>
+			</tr>
+			<tr>
+				<td>teacherName:</td>
+				<td><input type="text" id="teacherName" v-model="v_teacherName"
+					placeholder="input the teacherName here" /></td>
+			</tr>
+			<tr>
+				<td>gender:</td>
+				<td><input type="text" id="gender" v-model="v_gender"
+					placeholder="input the gender here" /></td>
+			</tr>
+			<tr>
+				<td><button @click="submitForm($event)">提交</button></td>
+			</tr>
+			<tr>
+				<td>{{myreturn_message.data}}</td>
+			</tr>
+		</table>
+	</form>
+    </div>
+  </body>
+ <script>
+  new Vue({
+    el: '#app_insertTeacher',
+    created() {
+    },
+    data: {
+        v_teacherId: "",
+		v_teacherName: "",
+		v_gender: "",
+		myreturn_message:""
+    },
+    methods:{
+		submitForm: function(event) {
+	 
+	        event.preventDefault();
+	 
+			let formData = new FormData();
+	 
+			//下面是表单绑定的data 数据
+			formData.append('teacherId', this.v_teacherId);
+			formData.append('teacherName', this.v_teacherName);
+			formData.append('gender', this.v_gender);
+			
+			/*
+			//vue-resource
+	        this.$http.post('/api', formData).then(res => {
+				  // success callback
+			  }, err => {
+				  // error callback
+			});
+			*/
+			
+			//axios
+	 
+			//根据后台接收参数格式进行修改
+			let config = {
+				 headers: {
+				   'Content-Type': 'multipart/form-data'
+				 }
+			 }
+			
+			axios.post('http://localhost:8010/controller/teacher_vue/insertTeacherVue',formData, config)
+			.then(response => 
+				{
+					//这一句可以实现 返回结果显示在页面上
+					//主要是我后面想试一试跳转，所以返回结果我就先注释掉了
+					//this.myreturn_message = response;
+					console.log(response);
+					console.log(this);
+					//
+					//这里console.log(this.$router)发现弄不到router, 
+					//可能这个是另外一个页面的原因? 导致路由的router 没有放进来?
+					//正常来看，路由的router 在src/main.js 里面进行给App.vue的app进行配置了
+					//所以我也配置试一试?
+					//但我自己后面在main.js 配这个app_insertTeacher的vue却不行
+					//也许是SPA(single page application)的原因
+					//因为官方教学视频好像说是 vue这些东西好像是单页面应用 我忘了
+					//console.log(this.$router);
+					//this.$router.push("/about");
+					//
+					//所以我们这里就直接用js原生的跳转好了
+					//window.location.href="/about";
+					window.location.href="/index2.html";
+				}
+			)
+			.catch(err => {
+				// error callback
+			});
+		}
+}
+});  
+  </script>
+
+</html>
+
